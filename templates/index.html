@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chatbot AI Gilang</title>
+  <style>
+    body { font-family: Arial; background:#f4f4f4; }
+    #chat { max-width:600px; margin:auto; background:#fff; padding:20px; }
+    .user { color:blue; margin-top:10px; }
+    .bot { color:green; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <h2>Chatbot AI Gilang</h2>
+    <div id="messages"></div>
+    <input id="input" placeholder="Ketik pesan..." />
+    <button onclick="send()">Kirim</button>
+  </div>
+
+<script>
+async function send() {
+  const input = document.getElementById("input");
+  const msg = input.value;
+  input.value = "";
+
+  document.getElementById("messages").innerHTML +=
+    `<div class='user'>You: ${msg}</div>`;
+
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({message: msg})
+  });
+
+  const data = await res.json();
+  document.getElementById("messages").innerHTML +=
+    `<div class='bot'>AI: ${data.reply}</div>`;
+}
+</script>
+</body>
+</html>
